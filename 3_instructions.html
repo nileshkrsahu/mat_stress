@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mental Arithmetic Task</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: blue;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    p {
+      margin-bottom: 10px;
+      font-size: 36px;
+    }
+    ol {
+      text-align: left;
+      margin-bottom: 20px;
+      font-size: 18px;
+	    font-weight: bold;
+
+      padding-left: 20px;
+    }
+    .error {
+      color: red;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+	li{
+	margin:5%;
+	
+	}
+  </style>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var r_startTime = urlParams.get("r_startTime");
+    
+    document.querySelector("form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      
+      // Get the click time
+      var clickTime = new Date().getTime();
+      
+      // Construct the URL with query parameters
+      var url = "4_demo.html?r_startTime=" + r_startTime ;
+      
+      // Navigate to the 4_demo.html page
+      window.location.href = url;
+    });
+  });
+  
+</script>
+
+</head>
+<body>
+  <div class="container">
+    <h1 >Mental Arithmetic Task</h1>
+    <form action="4_demo.html" method="get">
+      <p><strong>INSTRUCTIONS</strong></p>
+      <ol>
+        <li>You will be shown arithmetic problems to solve.</li>
+		
+        <li>There are four levels with increasing difficulties.</li>
+		
+        <li>You have a maximum of 4 seconds, 4 seconds, 5 seconds, and 5 seconds for levels 1, 2, 3, and 4, respectively.</li>
+		
+        <li>You have to choose one option out of four.</li>
+		
+        <li>If you make a mistake, the screen will turn red to remind you to be careful.</li>
+		
+        <li>Try to maximize your score to be at the top of the scoreboard.</li>
+		
+        <li>For each correct answer, you will get +1 point, and -1 point for a wrong answer.</li>
+		
+      </ol>
+      <p>Please click on "I agree" to start a demo trial.</p>
+      <input type="checkbox" id="agree"  required >
+	  <label for="agree" font-size="28px"><font size="+2">I agree:</font> </label>
+      
+      <br><br>
+      <input type="submit" value="Start">
+    </form>
+  </div>
+</body>
+</html>

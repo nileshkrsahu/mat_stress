@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Quiz</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+		h1 {
+  text-align: center;
+  color: red;
+}
+		h2 {
+  text-align: center;
+  color: blue;
+}
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 900px;
+			height: 480px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+			font-size: 24px;
+            font-weight: bold;
+        }
+
+        .question-card {
+            width: 100%;
+            padding: 20px;
+
+        }
+
+        .question {
+            font-size: 52px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .answer-buttons {
+            margin-top: 20px;
+			justify-content = center;
+			margin-left: 20%;
+        }
+
+        .answer-button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 52px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .answer-button:hover {
+            background-color: #e0e0e0;
+			
+        }
+
+        .timer {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .level-results {
+            margin-top: 20px;
+            font-size: 52px;
+            font-weight: bold;
+        }
+
+        .scoreboard {
+            width: 250px;
+			margin: 50 px;
+			height: 400px;
+`			font-size: 52px;
+            font-weight: bold;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+			
+
+        }
+
+        .scoreboard-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .scoreboard-list {
+            list-style-type: none;
+            padding: 0;
+			font-size: 30px;
+            margin: 0;
+        }
+
+    #hurry-up {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: yellow;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: bold;
+        opacity: 1;
+    }
+
+        .scoreboard-item {
+            margin-bottom: 10px;
+        }
+		#startButton{
+			width: 100px;
+			height: 50px;
+			margin-top: 5%;
+			margin-left: 42.5%;
+			color: blue;
+		}
+		#startquiz{
+			display: none;
+			width: 100px;
+			height: 50px;
+			margin-top: 5%;
+			margin-left: 42.5%;
+			color: blue;
+		}
+    </style>
+    <script>
+		
+         const levels = {
+            "level1": ["17 + 9", "13 - 6", "24 + 3", "10 - 2", "15 + 8", "19 - 5", "11 + 4", "27 - 12", "22 + 6", "18 - 9", "20 + 11", "14 - 3", "16 + 7", "25 - 8", "21 + 5", "23 - 4", "28 + 9", "30 - 14", "26 + 3", "12 - 7", "32 + 5", "9 - 3", "19 + 4", "16 - 10", "13 + 6", "27 - 15", "22 + 8", "11 - 4", "15 + 9", "20 - 6", "14 + 3", "28 - 12", "24 + 6", "17 - 9", "21 + 7", "23 - 5", "18 + 10", "10 - 2", "25 + 9"],
+            "level2":  ["4 * 6 - 16", "3 + 2 * 2", "8 - 2 * 3", "5 * 3 - 7", "9 + 4 * 2", "6 - 3 * 2", "7 * 5 - 9", "2 + 6 * 3", "4 - 2 * 5", "3 * 4 + 2", "8 + 3 * 2", "5 - 2 * 3", "6 * 2 - 4", "3 + 4 * 5", "9 - 2 * 4", "5 * 3 + 1", "7 + 2 * 4", "4 - 3 * 2", "6 * 4 - 8", "2 + 5 * 3", "9 - 4 * 2", "5 * 2 + 3", "7 + 3 * 4", "3 - 2 * 6", "6 * 3 - 9", "4 + 3 * 5", "8 - 2 * 4", "5 * 4 + 2", "9 + 2 * 3", "6 - 4 * 2", "7 * 2 - 3", "2 + 4 * 6", "8 - 3 * 2", "5 * 5 + 1", "9 + 4 * 2", "6 - 3 * 4", "4 * 2 - 6", "3 + 5 * 4", "8 - 4 * 2", "5 * 3 + 2", "7 + 2 * 3", "2 - 3 * 4", "6 * 2 - 8", "3 + 6 * 4", "9 - 2 * 3", "5 * 4 + 3", "7 + 3 * 2", "4 - 2 * 6", "6 * 3 - 7", "2 + 5 * 4", "8 - 4 * 2"],
+            "level3":  ["9 - 4 * 6 + 21", "7 + 3 * 4 - 2", "15 - 2 * 3 + 8", "5 * 3 - 7 + 2", "12 + 4 * 2 - 5", "6 - 3 * 2 + 9", "10 * 5 - 3 + 2", "2 + 6 * 3 - 4", "8 - 2 * 5 + 3", "3 * 4 + 2 - 1", "9 - 6 * 3 + 12", "4 + 2 * 5 - 3", "11 - 3 * 2 + 7", "6 * 4 - 9 + 2", "13 + 5 * 2 - 8", "9 - 2 * 4 + 7", "5 * 3 + 1 - 2", "8 + 2 * 4 - 3", "6 - 3 * 2 + 5", "7 * 4 - 2 + 1", "2 + 5 * 3 - 1", "9 - 4 * 2 + 6", "5 * 2 + 3 - 1", "8 + 3 * 4 - 6", "6 - 2 * 3 + 7", "7 * 2 - 3 + 4", "2 + 4 * 6 - 8", "9 - 3 * 2 + 1", "5 * 4 + 2 - 3", "8 + 2 * 3 - 1", "6 - 4 * 2 + 3", "7 * 2 - 4 + 1", "3 + 6 * 4 - 7", "9 - 2 * 3 + 5", "5 * 4 + 3 - 1", "8 + 3 * 2 - 4", "6 - 2 * 3 + 1", "7 * 3 - 4 + 5", "2 + 5 * 4 - 3", "9 - 4 * 2 + 7", "5 * 3 + 2 - 1", "8 + 2 * 3 - 4", "6 - 4 * 2 + 9", "7 * 2 - 3 + 2", "3 + 6 * 4 - 8", "9 - 3 * 2 + 3", "5 * 4 + 3 - 2", "8 + 3 * 2 - 5", "6 - 2 * 3 + 4"],
+            "level4":  ["57 / 3 - 9 + 6", "12 + 4 / 4 - 2", "24 - 6 * 8 / 2", "15 * 6 / 3 + 2", "72 / 8 + 5 - 3", "18 - 12 / 4 * 9", "36 * 2 - 10 / 5", "10 + 6 / 3 - 2", "48 - 3 * 14 / 7", "20 * 4 / 2 + 6", "64 / 4 - 2 + 5", "16 + 12 / 4 * 3", "30 - 4 * 2 / 2", "9 * 6 / 3 / 2", "40 / 5 / 2 - 1", "14 + 3 / 3 - 5", "56 - 6 * 27 / 9", "25 * 84 / 7 + 2", "80 / 8 + 4 - 2", "22 - 3 * 42 / 6", "42 * 2 - 81 / 3", "18 + 15 / 3 - 2", "72 - 4 * 30 / 6", "35 * 12 / 3 + 7", "88 / 4 + 5 - 2", "28 + 6 / 2 - 4", "54 - 2 * 7 / 7", "12 * 18 / 6 + 9", "50 / 5 + 3 - 1", "16 + 30 / 5 * 2", "68 - 6 * 56 / 8", "40 * 27 / 9 + 2", "96 / 6 + 4 - 2", "24 + 4 / 2 - 3", "45 - 2 * 14 / 7", "10 * 15 / 3 + 9", "64 / 8 + 2 - 4", "32 - 3 * 25 / 5", "8 * 60 / 4 - 3", "30 / 5 + 2 - 1", "14 + 12 / 3 * 5", "36 - 4 * 72 / 9", "15 * 2 / 2 + 3", "64 / 8 + 4 - 2", "20 + 6 / 3 - 4", "42 - 2 * 56 / 8", "9 * 9 / 3 - 2", "18 / 2 + 4 - 3", "27 * 24 / 6 + 5", "81 / 9 - 3 + 2"]
+        };
+        let currentLevel = "level1";
+        let questionsAsked = 0;
+        let correctAnswers = 0;
+        let incorrectAnswers = 0;
+		let totalscore = 0;
+		var r_startTime;
+        let timer;
+		
+		document.addEventListener("DOMContentLoaded", function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      r_startTime = urlParams.get("r_startTime");
+      
+      // Use the startTime value as needed
+      console.log("r_Start Time:", r_startTime);
+      
+      // Rest of your code...
+    });
+        function startQuiz() {
+            if (questionsAsked >= 1) {
+				
+                nextLevel();
+                return;
+            }
+			
+			let question = levels[currentLevel][Math.floor(Math.random() * levels[currentLevel].length)];
+            let correctAnswer = eval(question);
+            let answers = generateAnswers(correctAnswer);
+            document.getElementById("question").innerText = question;
+            for(let i = 0; i < 4; i++) {
+                document.getElementById(`answer${i}`).innerText = answers[i];
+            }
+
+            questionsAsked++;
+
+            // Show the answer buttons
+            document.getElementById("answerButtons").style.display = "block";
+
+            // Start the timer
+            startTimer();
+
+            // Hide the Start button
+            document.getElementById("startButton").style.display = "none";
+        }
+
+        function startTimer() {
+			
+            let timeLeft = 4;
+			if(currentLevel == "level1"){
+			timeLeft = 4;
+			}
+			else if(currentLevel == "level2"){
+			timeLeft = 4;
+			}
+			else if(currentLevel == "level3"){
+			timeLeft = 5;
+			}
+			else if(currentLevel == "level4"){
+			timeLeft = 5;
+			}
+			let temp = timeLeft;
+            document.getElementById("timer").innerText = "Time left: 00:" + timeLeft;
+
+            timer = setInterval(function() {
+                timeLeft--;
+                document.getElementById("timer").innerText = "Time left: 00:" + (timeLeft >= 10 ? timeLeft : "0" + timeLeft);
+				
+				if (timeLeft <= Math.ceil(temp / 2) && timeLeft>0.5) {
+            let hurryUp = document.createElement("div");
+            hurryUp.innerText = "Hurry Up babe";
+            hurryUp.id = "hurry-up";
+            hurryUp.style.transition = "opacity 1s linear";
+            document.body.appendChild(hurryUp);
+
+            setTimeout(function() {
+                hurryUp.style.opacity = "0";
+            }, 500);
+
+            setTimeout(function() {
+                document.body.removeChild(hurryUp);
+            }, 500);
+        }
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    document.querySelector(".container").style.backgroundColor = "red";
+        setTimeout(function() {
+            document.querySelector(".container").style.backgroundColor = "";
+            startQuiz();
+        }, 200);
+                }
+            }, 1000);
+        }
+
+        function nextLevel() {
+            questionsAsked = 0;
+            let nextLevelNumber = parseInt(currentLevel.charAt(currentLevel.length - 1)) + 1;
+            if (nextLevelNumber <= 4) {
+                currentLevel = "level" + nextLevelNumber;
+                document.getElementById("level").innerText = currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1);
+                document.getElementById("question").innerText = "";
+                for(let i = 0; i < 4; i++) {
+                    document.getElementById(`answer${i}`).innerText = "";
+                }
+                document.getElementById("answerButtons").style.display = "none";
+                document.getElementById("startButton").innerText = "Start Level " + nextLevelNumber;
+                document.getElementById("startButton").style.display = "inline";
+
+                // Show the level results
+                document.getElementById("levelResults").innerText = "Level " + (nextLevelNumber - 1) + " Results:";
+                document.getElementById("levelCorrectAnswers").innerText = "Correct answers: " + correctAnswers;
+                document.getElementById("levelIncorrectAnswers").innerText = "Incorrect answers: " + incorrectAnswers;
+                correctAnswers = 0;
+                incorrectAnswers = 0;
+            }
+            else {
+                document.getElementById("level").innerText = "Get Ready!";
+				
+                document.getElementById("question").innerText = "Please click on START to start the round";
+                document.getElementById("answerButtons").style.display = "none";
+                document.getElementById("correctAnswers").style.display = "none";
+				document.getElementById("timer").style.display = "none";
+				document.getElementById("incorrectAnswers").style.display = "none";
+				document.getElementById("startButton").style.display = "none";
+                document.getElementById("startquiz").style.display = "inline";
+				
+				
+            }
+        }
+		function callNext() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var r_startTime = urlParams.get("r_startTime");
+  
+  // Construct the URL with the r_startTime query parameter
+  var url = "5_quiz.html?r_startTime=" + r_startTime;
+  
+  // Navigate to the 5_quiz.html page
+  window.location.href = url;
+}
+
+		
+        function generateAnswers(correctAnswer) {
+            let answers = [correctAnswer];
+            while(answers.length < 4) {
+                let randomAnswer = correctAnswer + Math.floor(Math.random() * 10) - 5;
+                if (!answers.includes(randomAnswer)) {
+                    answers.push(randomAnswer);
+                }
+            }
+            return answers.sort(() => Math.random() - 0.5);
+        }
+
+       function checkAnswer(selectedAnswer) {
+    clearInterval(timer);
+    let correctAnswer = eval(document.getElementById("question").innerText);
+    if (selectedAnswer == correctAnswer) {
+        correctAnswers++;
+		totalscore++;
+        document.getElementById("correctAnswers").innerText = "Correct answers: " + correctAnswers;
+        document.querySelector(".container").style.backgroundColor = "green";
+        setTimeout(function() {
+            document.querySelector(".container").style.backgroundColor = "";
+            startQuiz();
+        }, 200);
+    } else {
+        incorrectAnswers++;
+        document.getElementById("incorrectAnswers").innerText = "Incorrect answers: " + incorrectAnswers;
+        document.querySelector(".container").style.backgroundColor = "red";
+        setTimeout(function() {
+            document.querySelector(".container").style.backgroundColor = "";
+            startQuiz();
+        }, 200);
+    }
+}
+
+		
+
+    </script>
+</head>
+<body>
+
+	
+    <div class="container">
+        <div class="question-card">
+		<h1 style="color: blue;">DEMO TRIAL</h1>
+            <h1 id="level">Level 1</h1>
+            <h2 class="question" id="question"></h2>
+            <div class="timer" id="timer">Time left: 00:00</div>
+            <div class="answer-buttons" id="answerButtons" style="display: none;">
+                <button class="answer-button" id="answer0" onclick="checkAnswer(this.innerText)"></button>
+                <button class="answer-button" id="answer1" onclick="checkAnswer(this.innerText)"></button>
+                <button class="answer-button" id="answer2" onclick="checkAnswer(this.innerText)"></button>
+                <button class="answer-button" id="answer3" onclick="checkAnswer(this.innerText)"></button>
+            </div>
+            <div id="correctAnswers">Correct answers: 0</div>
+            <div id="incorrectAnswers">Incorrect answers: 0</div>
+            <button id="startButton" onclick="startQuiz()">Start Level 1</button>
+			
+			<button id="startquiz" onclick="callNext()">START</button>
+
+            <div class="level-results" id="levelResults" style="display: none;"></div>
+            <div id="levelCorrectAnswers" style="display: none;"></div>
+            <div id="levelIncorrectAnswers" style="display: none;"></div>
+        </div>
+        
+    </div>
+	
+</body>
+</html>

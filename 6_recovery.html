@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mental Arithmetic Task</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: blue;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    p {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    ol {
+      text-align: left;
+      margin-bottom: 20px;
+      font-size: 18px;
+      padding-left: 20px;
+    }
+    .error {
+      color: red;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    #countdown {
+      font-size: 48px;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+	.video-container {
+      max-width: 800px;
+      margin-top: 50px;
+      display: none;
+    }
+    #message {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+  <script>
+	let l1startTime = null;
+		let l2startTime = null;
+		let l3startTime = null;
+		let l4startTime = null;
+		let l1endTime = null;
+		let l2endTime = null;
+		let l3endTime = null;
+		let l4endTime = null;
+        let timer;
+		var r_startTime;
+		var r_end_time=null;
+		var totalscore;
+    document.addEventListener("DOMContentLoaded", function() {
+		var urlParams = new URLSearchParams(window.location.search);
+      
+      // Retrieve the query parameters
+      userName = urlParams.get("userName");
+       l1startTime = urlParams.get("l1startTime");
+       l2startTime = urlParams.get("l2startTime");
+       l3startTime = urlParams.get("l3startTime");
+       l4startTime = urlParams.get("l4startTime");
+       l1endTime = urlParams.get("l1endTime");
+       l2endTime = urlParams.get("l2endTime");
+       l3endTime = urlParams.get("l3endTime");
+       l4endTime = urlParams.get("l4endTime");
+       r_startTime = urlParams.get("r_startTime");
+       totalscore = urlParams.get("totalscore");
+
+      // Use the received values as needed
+      console.log("User Name:", userName);
+      console.log("Level 1 Start Time:", l1startTime);
+      console.log("Level 2 Start Time:", l2startTime);
+      console.log("Level 3 Start Time:", l3startTime);
+      console.log("Level 4 Start Time:", l4startTime);
+      console.log("Level 1 End Time:", l1endTime);
+      console.log("Level 2 End Time:", l2endTime);
+      console.log("Level 3 End Time:", l3endTime);
+      console.log("Level 4 End Time:", l4endTime);
+      console.log("Recovery Start Time:", r_startTime);
+      function myFunction() {
+	  const startTime = new Date().getTime();
+			  var popup = document.getElementById("myPopup");
+			  
+			  var date = new Date(startTime);
+			  var hours = date.getHours();
+			  var minutes = date.getMinutes();
+			  var seconds = date.getSeconds();
+			  
+			  var formattedTime = hours.toString().padStart(2, '0') + ':' + 
+								  minutes.toString().padStart(2, '0') + ':' + 
+								  seconds.toString().padStart(2, '0');
+
+			r_end_time = formattedTime;
+			
+		}
+      
+      var countdownElement = document.getElementById("countdown");
+      var messageElement = document.getElementById("message");
+      var countdownDuration = 180; // 3 minutes in seconds
+
+      function startCountdown() {
+        var countdown = countdownDuration;
+        var interval = setInterval(function() {
+          countdown--;
+          countdownElement.innerText = formatTime(countdown);
+
+          if (countdown <= 0) {
+            clearInterval(interval);
+            window.location.href = "7_thankyou.html"; // Replace "next.html" with the actual filename of the next HTML file
+          }
+        }, 1000);
+      }
+
+      function formatTime(seconds) {
+        var minutes = Math.floor(seconds / 60);
+        var remainingSeconds = seconds % 60;
+        return padNumber(minutes) + ":" + padNumber(remainingSeconds);
+      }
+
+      function padNumber(number) {
+        return number.toString().padStart(2, "0");
+      }
+
+      document.getElementById("startButton").addEventListener("click", function(event) {
+    event.preventDefault();
+	myFunction();
+  saveScore(totalscore);
+    document.getElementById("startButton").style.display = "none";
+    messageElement.style.display = "block";
+    videoContainer.style.display = "block";
+    const startTime = new Date().getTime();
+    var date = new Date(startTime);
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+    var formattedTime = hours.toString().padStart(2, '0') + ':' +
+      minutes.toString().padStart(2, '0') + ':' +
+      seconds.toString().padStart(2, '0');
+    r_startTime = formattedTime;
+    startCountdown();
+    var videoPlayer = document.getElementById("videoPlayer");
+    videoPlayer.src = "https://www.youtube.com/embed/AGkG2BpcFD8?autoplay=1";
+    playFullscreen(videoPlayer);
+  });
+  function playFullscreen(videoElement) {
+    if (videoElement.requestFullscreen) {
+      videoElement.requestFullscreen();
+    } else if (videoElement.mozRequestFullScreen) {
+      videoElement.mozRequestFullScreen();
+    } else if (videoElement.webkitRequestFullscreen) {
+      videoElement.webkitRequestFullscreen();
+    } else if (videoElement.msRequestFullscreen) {
+      videoElement.msRequestFullscreen();
+    }
+  }
+});
+	function saveScore(score) {
+            let userName = localStorage.getItem("userName");
+            const data = `${userName},${r_startTime},${l1startTime},${l1endTime},${l2startTime},${l2endTime},${l3startTime},${l3endTime},${l4startTime},${l4endTime},${r_end_time},${score}\n`;
+
+            const blob = new Blob([data], {type: "text/plain"});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "scores.csv";
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to the resting phase</h1>
+	<h2> Please click on start for resting stage </h2>
+    <form>
+      <div id="message" style="display: none;">
+        <p><strong>Resting state is started.</strong></p>
+        <p>Please wait for the timer to reach zero.</p>
+      </div>
+      <div id="countdown"></div>
+      <input type="submit" id="startButton" value="Start">
+    </form>
+  </div>
+  <div class="video-container" id="videoContainer">
+    <iframe id="videoPlayer" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</body>
+</html>

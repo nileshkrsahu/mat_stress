@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mental Arithmetic Task</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 800px;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: blue;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    p {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    ol {
+      text-align: left;
+      margin-bottom: 20px;
+      font-size: 18px;
+      padding-left: 20px;
+    }
+    .error {
+      color: red;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    #countdown {
+      font-size: 48px;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+    #message {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .video-container {
+      max-width: 800px;
+      margin-top: 50px;
+      display: none;
+    }
+	#agree{
+		width: 20px;
+		height: 20px;
+	}
+	#startButton
+	{
+		background-color: null;
+		color: white;
+		font-size: 25px;
+	}
+  </style>
+  <script>
+   document.addEventListener("DOMContentLoaded", function() {
+  var countdownElement = document.getElementById("countdown");
+  var messageElement = document.getElementById("message");
+  var videoContainer = document.getElementById("videoContainer");
+  var countdownDuration = 180; // 3 minutes in seconds
+  var r_startTime; // Variable to store the start time
+
+  function startCountdown() {
+    var countdown = countdownDuration;
+    var interval = setInterval(function() {
+      countdown--;
+      countdownElement.innerText = formatTime(countdown);
+
+      if (countdown <= 0) {
+        clearInterval(interval);
+        // Pass the start time to the next page using query parameters
+        window.location.href = "3_instructions.html?r_startTime=" + r_startTime;
+      }
+    }, 1000);
+  }
+
+  function formatTime(seconds) {
+    var minutes = Math.floor(seconds / 60);
+    var remainingSeconds = seconds % 60;
+    return padNumber(minutes) + ":" + padNumber(remainingSeconds);
+  }
+
+  function padNumber(number) {
+    return number.toString().padStart(2, "0");
+  }
+
+  document.getElementById("startButton").addEventListener("click", function(event) {
+    event.preventDefault();
+    document.getElementById("mssg").innerText = "Resting Phase";
+    document.getElementById("startButton").style.display = "none";
+    messageElement.style.display = "block";
+    videoContainer.style.display = "block";
+    const startTime = new Date().getTime();
+    var date = new Date(startTime);
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+    var formattedTime = hours.toString().padStart(2, '0') + ':' +
+      minutes.toString().padStart(2, '0') + ':' +
+      seconds.toString().padStart(2, '0');
+    r_startTime = formattedTime;
+    startCountdown();
+    var videoPlayer = document.getElementById("videoPlayer");
+    videoPlayer.src = "https://www.youtube.com/embed/AGkG2BpcFD8?autoplay=1";
+    playFullscreen(videoPlayer);
+  });
+
+  function playFullscreen(videoElement) {
+    if (videoElement.requestFullscreen) {
+      videoElement.requestFullscreen();
+    } else if (videoElement.mozRequestFullScreen) {
+      videoElement.mozRequestFullScreen();
+    } else if (videoElement.webkitRequestFullscreen) {
+      videoElement.webkitRequestFullscreen();
+    } else if (videoElement.msRequestFullscreen) {
+      videoElement.msRequestFullscreen();
+    }
+  }
+});
+ function enableStartButton() {
+    var agreeCheckbox = document.getElementById("agree");
+    var startButton = document.getElementById("startButton");
+    
+    if (agreeCheckbox.checked) {
+      startButton.disabled = false;
+	  startButton.style.backgroundColor = "green";
+    } else {
+      startButton.disabled = true;
+	  startButton.style.backgroundColor = "";
+    }
+  }
+
+  function handleStartButton() {
+    var startButton = document.getElementById("startButton");
+    
+    if (startButton.disabled) {
+      alert("Please agree to the terms before starting the trial.");
+    }
+  }
+  </script>
+</head>
+<body>
+
+<div class="container">
+  <h1 id="mssg">Welcome to the study</h1>
+  <form>
+    <div id="message">
+      <p><strong>First part of this study is Resting Phase</strong></p>
+      <p>In this phase, a relaxation video is going to be played.</p>
+      <p>Sit Idle and Enjoy the video.</p>
+    </div>
+    <div id="iagreediv">
+      <p>Please click on "I agree" to start a demo trial.</p>
+      
+     <input type="checkbox" id="agree" onchange="enableStartButton()" display="inline>
+	  <label for="agree" font-size="28px"><font size="+2">I agree:</font> </label> </div>
+    <div id="countdown"></div>
+    <input type="button" id="startButton" value="Start" disabled onclick="handleStartButton()">
+  </form>
+</div>
+  <div class="video-container" id="videoContainer">
+    <iframe id="videoPlayer" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</body>
+</html>
